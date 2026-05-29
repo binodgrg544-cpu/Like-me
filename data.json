@@ -1,0 +1,6 @@
+{
+  "players": ["Lionel Messi", "Cristiano Ronaldo", "Kylian Mbappé", "Erling Haaland", "Raul Gonzalez", "Thierry Henry"],
+  "movies": ["Inception", "The Dark Knight", "Titanic", "Interstellar", "Gladiator"],
+  "food": ["Paneer Curry", "Chicken Roast", "Mureli Makai", "Momos"],
+  "cities": ["Kathmandu", "Hetauda", "Tokyo", "London", "New York"]
+}
