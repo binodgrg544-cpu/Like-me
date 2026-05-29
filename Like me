@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LikeMe Search</title>
+</head>
+<body>
+    <input type="text" id="search" placeholder="Search...">
+    <div id="list"></div>
+    <script>
+        const items = ["Messi", "Ronaldo", "Inception", "Titanic", "Kathmandu", "Hetauda", "Momos", "Chicken"];
+        const listDiv = document.getElementById('list');
+        
+        function show(filter = "") {
+            listDiv.innerHTML = items
+                .filter(i => i.toLowerCase().includes(filter.toLowerCase()))
+                .map(i => `<div>${i}</div>`).join('');
+        }
+        
+        document.getElementById('search').oninput = (e) => show(e.target.value);
+        show();
+    </script>
+</body>
+</html>
