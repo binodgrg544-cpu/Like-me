@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LikeMe - Find Your Match</title>
+    <style>
+        :root {
+            --primary-color: #ff4757;
+            --secondary-color: #2f3542;
+            --bg-color: #f1f2f6;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: var(--bg-color); color: var(--secondary-color); display: flex; justify-content: center; align-content: center; min-height: 100vh; padding: 20px; }
+        .app-container { background: white; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 450px; padding: 25px; overflow: hidden; position: relative; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { color: var(--primary-color); font-size: 2.2rem; }
+        .header p { color: #747d8c; font-size: 0.9rem; margin-top: 5px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.95rem; }
+        .form-group input { width: 100%; padding: 12px; border: 2px solid #ced6e0; border-radius: 10px; font-size: 1rem; outline: none; transition: 0.3s; }
+        .form-group input:focus { border-color: var(--primary-color); }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .option-card { border: 2px solid #ced6e0; border-radius: 12px; padding: 12px; text-align: center; cursor: pointer; font-weight: 600; transition: 0.2s; background: #fff; }
+        .option-card.selected { border-color: var(--primary-color); background: #ffeaa7; color: #d63031; }
+        .btn-submit { width: 100%; background: var(--primary-color); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.3s; }
+        .btn-submit:hover { background: #ff6b81; }
+        .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: 0.3s; }
+        .popup.active { opacity: 1; pointer-events: auto; }
+        .popup-content { background: white; width: 90%; max-width: 380px; padding: 30px; border-radius: 20px; text-align: center; transform: scale(0.8); transition: 0.3s; }
+        .popup.active .popup-content { transform: scale(1); }
+        .popup-content h2 { color: #2ecc71; margin-bottom: 10px; }
+        .popup-content p { margin-bottom: 20px; color: #57606f; line-height: 1.5; }
+        .btn-close { background: var(--secondary-color); color: white; border: none; padding: 10px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="header">
+        <h1>LikeMe ❤️</h1>
+        <p>Find your absolute soulmate based on core choices</p>
+    </div>
+
+    <div id="survey-form">
+        <!-- Name Input -->
+        <div class="form-group">
+            <label for="username">Your Name</label>
+            <input type="text" id="username" placeholder="Enter your full name" required>
+        </div>
+
+        <!-- Question 1 -->
+        <div class="form-group">
+            <label>1. Preferred Football Icon?</label>
+            <div class="options-grid" id="q1-options">
+                <div class="option-card" data-val="Messi">Lionel Messi</div>
+                <div class="option-card" data-val="Ronaldo">C. Ronaldo</div>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="form-group">
+            <label>2. Ultimate Movie Classic?</label>
+            <div class="options-grid" id="q2-options">
+                <div class="option-card" data-val="Titanic">Titanic</div>
+                <div class="option-card" data-val="Avatar">Avatar</div>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="form-group">
+            <label>3. Ideal First Date Vibe?</label>
+            <div class="options-grid" id="q3-options">
+                <div class="option-card" data-val="Coffee">Café Conversation</div>
+                <div class="option-card" data-val="Adventure">Outdoor Adventure</div>
+            </div>
+        </div>
+
+        <button class="btn-submit" onclick="processSelection()">Find My Match</button>
+    </div>
+</div>
+
+<!-- Match Alert Popup -->
+<div class="popup" id="match-popup">
+    <div class="popup-content">
+        <h2>Match Found! 🎉</h2>
+        <p id="match-message">Calculating system metrics...</p>
+        <button class="btn-close" onclick="closePopup()">Awesome</button>
+    </div>
+</div>
+
+<script>
+    // Handle Option Card Selection Layouts
+    document.querySelectorAll('.options-grid').forEach(grid => {
+        grid.querySelectorAll('.option-card').forEach(card => {
+            card.addEventListener('click', () => {
+                grid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+            });
+        });
+    });
+
+    function processSelection() {
+        const name = document.getElementById('username').value.trim();
+        if(!name) { alert('Please fill in your name first.'); return; }
+
+        const q1 = document.querySelector('#q1-options .selected');
+        const q2 = document.querySelector('#q2-options .selected');
+        const q3 = document.querySelector('#q3-options .selected');
+
+        if(!q1 || !q2 || !q3) { alert('Please answer all 3 choice modules.'); return; }
+
+        // Local Interactive Algorithm Simulation (Phase 1 Layout)
+        document.getElementById('match-message').innerHTML = `Hey <b>${name}</b>, your profile parameters [${q1.dataset.val}, ${q2.dataset.val}, ${q3.dataset.val}] have been hosted into the cluster routing table. Cloud algorithms are filtering profiles!`;
+        document.getElementById('match-popup').classList.add('active');
+    }
+
+    function closePopup() {
+        document.getElementById('match-popup').classList.remove('active');
+    }
+</script>
+
+</body>
+</html>
